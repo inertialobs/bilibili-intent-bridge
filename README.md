@@ -7,7 +7,7 @@
 
 BiliBridge 是一个轻量级 Android 跳转桥：当网页或应用把 B 站链接定向发送给官方包名 `tv.danmaku.bili` 时，由桥接 Activity 接收链接并转交给第三方客户端。
 
-本项目当前按 [PiliPlus](https://github.com/bggRGjQaUbCoE/PiliPlus) 配置，目标包名为 `com.example.piliplus`, 不包含 B 站客户端，也不修改第三方客户端的 APK、签名或数据。
+本项目当前按 [PiliPlus](https://github.com/bggRGjQaUbCoE/PiliPlus) 配置，目标包名为 `com.example.piliplus`，不包含 B 站客户端，也不修改第三方客户端的 APK、签名或数据。
 
 ## 工作方式
 
@@ -20,7 +20,12 @@ BiliBridge 是一个轻量级 Android 跳转桥：当网页或应用把 B 站链
 
 ### GitHub Actions
 
-推送到 `main` 分支，或在 Actions 页面手动运行 **Build Android APK**。成功后下载 `BiliBridge-debug` artifact，其中的 APK 路径为：
+推送到 `main` 分支，或在 Actions 页面手动运行 **Build Android APK**。成功后会生成两个 artifact：
+
+- `BiliBridge-debug`：debug 签名，适合开发测试。
+- `BiliBridge-release`：使用项目固定的 release 密钥签名，适合长期安装和覆盖更新。该产物只会由本项目仓库的 CI 生成。
+
+debug APK 的路径为：
 
 ```text
 app/build/outputs/apk/debug/app-debug.apk
@@ -50,7 +55,7 @@ APK 输出位置同上。
 - 官方 B 站与桥使用相同应用 ID，二者不能并存；要安装官方客户端，需先卸载桥。
 - 部分宿主会检查包可见性、签名或额外接口。桥只提供包名和 Intent 接收入口，不模拟官方签名、Provider 或完整 PackageManager 行为。
 - Android 11 及以上的包可见性规则可能影响宿主的安装状态查询；宿主是否声明了相应查询权限/范围会影响结果。
-- GitHub Actions 产物为 debug 签名。不同 CI 运行生成的签名可能不同，覆盖更新失败时需先卸载旧版桥再安装新版。
+- CI 的 release APK 使用固定签名；debug APK 使用临时签名，不同 CI 运行之间可能无法覆盖安装。
 
 ## 许可证
 
