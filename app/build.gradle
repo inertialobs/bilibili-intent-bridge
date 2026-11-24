@@ -2,6 +2,17 @@ plugins {
     id 'com.android.application'
 }
 
+def releaseKeystorePath = System.getenv('BILIBRIDGE_KEYSTORE_PATH')
+def releaseStorePassword = System.getenv('BILIBRIDGE_KEYSTORE_PASSWORD')
+def releaseKeyAlias = System.getenv('BILIBRIDGE_KEY_ALIAS')
+def releaseKeyPassword = System.getenv('BILIBRIDGE_KEY_PASSWORD')
+def releaseSigningConfigured = [
+    releaseKeystorePath,
+    releaseStorePassword,
+    releaseKeyAlias,
+    releaseKeyPassword
+].every { value -> value != null && !value.trim().isEmpty() }
+
 android {
     namespace 'com.example.bilbridge'
     compileSdk 35
@@ -12,5 +23,25 @@ android {
         targetSdk 35
         versionCode 1
         versionName '1.0'
+    }
+
+    signingConfigs {
+        if (releaseSigningConfigured) {
+            release {
+                storeFile file(releaseKeystorePath)
+                storePassword releaseStorePassword
+                keyAlias releaseKeyAlias
+                keyPassword releaseKeyPassword
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            if (releaseSigningConfigured) {
+                signingConfig signingConfigs.release
+            }
+        }
     }
 }

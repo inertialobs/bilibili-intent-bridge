@@ -3,3 +3,5 @@ local.properties
 **/build/
 *.iml
 .idea/
+bilibili-bridge-release.p12
+bilibili-bridge-signing-password.dpapi
