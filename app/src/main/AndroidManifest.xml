@@ -1,0 +1,52 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <queries>
+        <package android:name="com.example.piliplus" />
+    </queries>
+
+    <application
+        android:allowBackup="false"
+        android:label="BiliBridge"
+        android:supportsRtl="true">
+
+        <activity
+            android:name=".BridgeActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+
+            <!-- Lets getLaunchIntentForPackage(tv.danmaku.bili) reach the bridge
+                 without adding an app-drawer icon. -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.INFO" />
+            </intent-filter>
+
+            <!-- Low priority keeps PiliPlus as the preferred implicit handler;
+                 package-targeted intents for tv.danmaku.bili still reach this app. -->
+            <intent-filter android:priority="-100">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="bilibili" />
+                <data android:scheme="tv.danmaku.bili" />
+                <data android:scheme="bilibili-hd" />
+            </intent-filter>
+
+            <intent-filter android:priority="-100">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="bilibili.com" />
+                <data android:scheme="https" android:host="www.bilibili.com" />
+                <data android:scheme="https" android:host="m.bilibili.com" />
+                <data android:scheme="https" android:host="b23.tv" />
+                <data android:scheme="http" android:host="bilibili.com" />
+                <data android:scheme="http" android:host="www.bilibili.com" />
+                <data android:scheme="http" android:host="m.bilibili.com" />
+                <data android:scheme="http" android:host="b23.tv" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
